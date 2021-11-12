@@ -26,7 +26,7 @@ def main():
     ser = serial.Serial(args.com, args.frequency)
 
     # List of profiles the deck will cycle trough
-    profiles = [demo_record_mode()]
+    profiles = [demo_record_mode(), demo_stream_mode()]
 
     current_profile = 0;
 

@@ -12,6 +12,11 @@ class profile():
             return
         self.commands[index]()
 
+    def start_stop_stream(self):
+        ret = api.start_stop_stream()
+        if ret != None:
+            print(f"[{self.__class__.__name__}] {ret}")
+
     def start_record(self):
         ret = api.start_record()
         if ret != None:
@@ -26,6 +31,11 @@ class profile():
         ret = api.stop_record()
         if ret != None:
             print(f"[{self.__class__.__name__}] {ret}")
+
+# Demo: stream profile!
+class demo_stream_mode(profile):
+    def __init__(self):
+        self.commands = [self.start_stop_stream]
 
 # Demo: recording profile!
 class demo_record_mode(profile):
