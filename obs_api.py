@@ -57,6 +57,18 @@ class OBSAPI():
             self.state[0] = ""
             return "Stream ended!"
 
+    def next_scene(self):
+        scenes = self.ws.call(requests.GetSceneList()).getScenes()
+
+        for index in range(len(scenes)):
+            if self.current_scene == scenes[index]["name"]:
+                break
+
+        self.ws.call(requests.SetCurrentScene(scenes[(index + 1) % len(scenes)]["name"]))
+        self.current_scene = scenes[(index + 1) % len(scenes)]["name"]
+
+        return f"Switched to scene '{self.current_scene}'"
+
     def connect(self, host="localhost", port="4444", password=""):
         self.host = host
         self.port = port
@@ -64,6 +76,8 @@ class OBSAPI():
 
         self.ws = obsws(self.host, self.port, self.password)
         self.ws.connect()
+
+        self.current_scene = self.ws.call(requests.GetCurrentScene()).name
 
     def disconnect(self):
         self.ws.disconnect()
